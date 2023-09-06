@@ -31,7 +31,7 @@ const Welcome = () => {
   //const navigate = useNavigate()
   
   const signIn = () => {
-    fetch("http://localhost:8001/api/log_user/", {
+    fetch("http://localhost:8001/api/login_user/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"username": username, "password": password, "rememberMe": true})
