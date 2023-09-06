@@ -159,6 +159,7 @@ def loginUser(request):
         return JsonResponse({"success": False, "message": "Invalid request method"})
 
 
+@csrf_exempt
 def regUser(request):
     if request.method == "POST" and request.content_type == "application/json":
         data = json.loads(request.body)
