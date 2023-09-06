@@ -21,4 +21,8 @@ urlpatterns = [
     path("api/reset_all_counters/", views.reset_all_counters),
     path("api/launch_camera_process/", views.launch_camera_process),
     path("api/stop_camera_process/", views.stop_camera_process),
+    path("api/add_counter/", views.add_counter),
+    path("api/add_product/", views.add_product),
+    path("api/delete_counter/<int:id>", views.DeleteCounter.as_view()),
+    path("api/delete_product/<int:id>", views.DeleteProduct.as_view()),
 ]
