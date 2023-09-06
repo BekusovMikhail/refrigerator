@@ -13,6 +13,7 @@ urlpatterns = [
     path("api/counters_by_camera/<int:id>/", views.GetCountersByCamera.as_view()),
     path("api/counters_by_product/<int:id>/", views.GetCountersByProduct.as_view()),
     path("api/cameras_by_user/<int:id>/", views.GetCamerasByUser.as_view()),
+    path("api/cameras_by_username/<str:username>/", views.GetCamerasByUserUsername.as_view()),
     path("api/reg_user/", views.regUser),
     path("api/login_user/", views.loginUser),
     path("api/create_camera/", views.create_camera),
@@ -20,4 +21,8 @@ urlpatterns = [
     path("api/reset_all_counters/", views.reset_all_counters),
     path("api/launch_camera_process/", views.launch_camera_process),
     path("api/stop_camera_process/", views.stop_camera_process),
+    path("api/add_counter/", views.add_counter),
+    path("api/add_product/", views.add_product),
+    path("api/delete_counter/<int:id>", views.DeleteCounter.as_view()),
+    path("api/delete_product/<int:id>", views.DeleteProduct.as_view()),
 ]

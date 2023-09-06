@@ -13,9 +13,11 @@ class ExtendedUserSerializer(serializers.Serializer):
     is_admin = serializers.BooleanField(default=False)
 
 class ProductSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     name = serializers.CharField(max_length=100)
 
 class CameraSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     name = serializers.CharField(max_length=200)
     url = serializers.CharField(max_length=100)
     user = serializers.IntegerField(source='user.user.id')
@@ -25,6 +27,7 @@ class CameraSerializer(serializers.Serializer):
     status = serializers.IntegerField()
 
 class CounterSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     product_id = serializers.IntegerField(source='product.id')
     current_counter = serializers.IntegerField()
     camera_id = serializers.IntegerField(source='camera.id')

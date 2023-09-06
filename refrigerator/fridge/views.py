@@ -106,6 +106,19 @@ class GetCamerasByUser(APIView):
         return Response(serializer_for_queryset.data)
 
 
+class GetCamerasByUserUsername(APIView):
+    username = None
+
+    def get(self, request, username=None):
+        self.username = username
+        if self.username:
+            user = User.objects.filter(username=self.username)[0]
+            print(user)
+            queryset = Camera.objects.filter(user=user.id)
+            serializer_for_queryset = CameraSerializer(instance=queryset, many=True)
+        return Response(serializer_for_queryset.data)
+
+
 class GetCountersByCamera(APIView):
     id = None
 
@@ -358,3 +371,95 @@ def stop_camera_process(request):
         response_data = {"success": False, "message": "Only POST requests are allowed"}
 
         return JsonResponse(response_data, status=405)
+
+
+@login_required
+@csrf_exempt
+def add_counter(request):
+    if request.method == "POST" and request.content_type == "application/json":
+        data = json.loads(request.body)
+
+        try:
+            camera_id = data["camera_id"]
+            product_id = data["product_id"]
+
+            new_counter = Counter.objects.create(
+                camera=camera_id,
+                product=product_id,
+            )
+            new_counter.save()
+            response_data = {"success": True, "message": "Counter добавлен"}
+        except:
+            response_data = {
+                "success": False,
+                "message": "Не удалось добавить Counter",
+            }
+
+        return JsonResponse(response_data)
+
+    else:
+        response_data = {"success": False, "message": "Only POST requests are allowed"}
+
+        return JsonResponse(response_data, status=405)
+
+
+@login_required
+@csrf_exempt
+def add_product(request):
+    if request.method == "POST" and request.content_type == "application/json":
+        data = json.loads(request.body)
+
+        try:
+            name = data["name"]
+
+            new_product = Product.objects.create(
+                name=name,
+            )
+            new_product.save()
+            response_data = {"success": True, "message": "Product добавлен"}
+        except:
+            response_data = {
+                "success": False,
+                "message": "Не удалось добавить Product",
+            }
+
+        return JsonResponse(response_data)
+
+    else:
+        response_data = {"success": False, "message": "Only POST requests are allowed"}
+
+        return JsonResponse(response_data, status=405)
+
+
+class DeleteProduct(APIView):
+    id = None
+
+    def get(self, request, id=None):
+        self.id = id
+        if self.id:
+            product = Product.objects.get(pk=self.id)
+            ret_product = Product.objects.get(pk=self.id)
+            product.delete()
+            serializer_for_queryset = ProductSerializer(
+                instance=ret_product, many=False
+            )
+            return Response(serializer_for_queryset.data)
+        else:
+            return None
+
+
+class DeleteCounter(APIView):
+    id = None
+
+    def get(self, request, id=None):
+        self.id = id
+        if self.id:
+            counter = Counter.objects.get(pk=self.id)
+            ret_counter = Counter.objects.get(pk=self.id)
+            counter.delete()
+            serializer_for_queryset = CounterSerializer(
+                instance=ret_counter, many=False
+            )
+            return Response(serializer_for_queryset.data)
+        else:
+            return None
