@@ -1,9 +1,12 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .forms import VideoForm
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+
+from rest_framework.viewsets import ViewSet
 
 from .models import ExtendedUser, Counter, Camera, Product
 from django.contrib.auth.models import User
@@ -12,6 +15,7 @@ from .serializers import (
     CameraSerializer,
     CounterSerializer,
     ExtendedUserSerializer,
+    VideoSerializer,
 )
 import json
 
@@ -463,3 +467,44 @@ class DeleteCounter(APIView):
             return Response(serializer_for_queryset.data)
         else:
             return None
+
+
+class VideoViewSet(ViewSet):
+    serializer_class = VideoSerializer
+
+    def list(self, request):
+        return Response("GET API")
+
+    def create(self, request):
+        # username = 'xdzry'
+        # password = 'ardan'
+        # email = 'ardan@ardan'
+        # first_name = 'artem'
+        # last_name = 'artem'
+
+        # new_user = User.objects.create_user(username, email, password)
+        # new_user.first_name = first_name
+        # new_user.last_name = last_name
+
+        # new_user.save()
+
+        # ext_user = ExtendedUser(user=new_user)
+        # ext_user.patronymic = 'artem'
+        # ext_user.save()
+        # data = json.loads(request.body)
+        # name = data['name']
+        # user_id = data['user_id']
+        try:
+            upload_file = request.FILES.get("upload_file")
+            data = request.data
+            video = Video(
+                name=data["name"][0],
+                user_id=ExtendedUser.objects.get(pk=int(data["user_id"][0])),
+                video=upload_file,
+            )
+            video.save()
+            content_type = upload_file.content_type
+            response = "You have uploaded a {} file".format(content_type)
+        except:
+            response = "Bad fields"
+        return Response(response)

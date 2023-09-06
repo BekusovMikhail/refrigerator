@@ -1,4 +1,6 @@
 from rest_framework import serializers, renderers
+from rest_framework.serializers import FileField
+from .models import Video
 
 class ExtendedUserSerializer(serializers.Serializer):
     id = serializers.IntegerField(source='user.id')
@@ -31,3 +33,9 @@ class CounterSerializer(serializers.Serializer):
     product_id = serializers.IntegerField(source='product.id')
     current_counter = serializers.IntegerField()
     camera_id = serializers.IntegerField(source='camera.id')
+
+class VideoSerializer(serializers.ModelSerializer):
+    upload_file = FileField()
+    class Meta:
+        model = Video
+        fields = ['name', 'user_id', 'upload_file']

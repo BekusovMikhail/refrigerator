@@ -1,5 +1,9 @@
 from django.urls import include, path
+from rest_framework import routers
 from . import views
+
+router = routers.DefaultRouter()
+router.register(r'api/video_2', views.VideoViewSet, basename="upload")
 
 urlpatterns = [
     path("api/products/", views.GetProducts.as_view()),
@@ -25,4 +29,7 @@ urlpatterns = [
     path("api/add_product/", views.add_product),
     path("api/delete_counter/<int:id>", views.DeleteCounter.as_view()),
     path("api/delete_product/<int:id>", views.DeleteProduct.as_view()),
+    path("api/video", views.showvideo),
+    # path('api/video_2', views.VideoViewSet, name= 'video_list'),
+    path('', include(router.urls)),
 ]
