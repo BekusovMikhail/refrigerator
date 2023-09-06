@@ -104,7 +104,8 @@ class GetCamerasByUser(APIView):
             queryset = Camera.objects.filter(user=self.id)
             serializer_for_queryset = CameraSerializer(instance=queryset, many=True)
         return Response(serializer_for_queryset.data)
-    
+
+
 class GetCamerasByUserUsername(APIView):
     username = None
 
@@ -169,6 +170,7 @@ def loginUser(request):
             )
     else:
         return JsonResponse({"success": False, "message": "Invalid request method"})
+
 
 @csrf_exempt
 def regUser(request):
