@@ -104,6 +104,18 @@ class GetCamerasByUser(APIView):
             queryset = Camera.objects.filter(user=self.id)
             serializer_for_queryset = CameraSerializer(instance=queryset, many=True)
         return Response(serializer_for_queryset.data)
+    
+class GetCamerasByUserUsername(APIView):
+    username = None
+
+    def get(self, request, username=None):
+        self.username = username
+        if self.username:
+            user = User.objects.filter(username=self.username)[0]
+            print(user)
+            queryset = Camera.objects.filter(user=user.id)
+            serializer_for_queryset = CameraSerializer(instance=queryset, many=True)
+        return Response(serializer_for_queryset.data)
 
 
 class GetCountersByCamera(APIView):
