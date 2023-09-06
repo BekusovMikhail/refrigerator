@@ -14,5 +14,10 @@ urlpatterns = [
     path("api/counters_by_product/<int:id>/", views.GetCountersByProduct.as_view()),
     path("api/cameras_by_user/<int:id>/", views.GetCamerasByUser.as_view()),
     path("api/reg_user/", views.regUser),
-    path("api/log_user/", views.loginUser),
+    path("api/login_user/", views.loginUser),
+    path("api/create_camera/", views.create_camera),
+    path("api/delete_camera/", views.delete_camera),
+    path("api/reset_all_counters/", views.reset_all_counters),
+    path("api/launch_camera_process/", views.launch_camera_process),
+    path("api/stop_camera_process/", views.stop_camera_process),
 ]

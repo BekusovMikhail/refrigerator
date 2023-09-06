@@ -102,7 +102,7 @@ class GetCamerasByUser(APIView):
         self.id = id
         if self.id:
             queryset = Camera.objects.filter(user=self.id)
-            serializer_for_queryset = CameraSerializer(instance=queryset, many=False)
+            serializer_for_queryset = CameraSerializer(instance=queryset, many=True)
         return Response(serializer_for_queryset.data)
 
 
