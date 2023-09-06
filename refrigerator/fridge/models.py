@@ -14,7 +14,8 @@ class ExtendedUser(models.Model):
     creationDate = models.DateTimeField(auto_now_add=True)
 
 class Counter(models.Model):
-    product = models.ForeignKey('ExtendedUser', on_delete=models.CASCADE)
+    camera = models.ForeignKey('Camera', on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
     current_counter = models.IntegerField(default=0)
 
 class Camera(models.Model):
