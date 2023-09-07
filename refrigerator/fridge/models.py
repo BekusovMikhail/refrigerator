@@ -38,6 +38,7 @@ class Product(models.Model):
 class Video(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False)
     user_id = models.ForeignKey("ExtendedUser", on_delete=models.CASCADE, null=False, blank=False)
+    camera = models.ForeignKey("Camera", on_delete=models.CASCADE, null=False, blank=False)
     video = models.FileField(
         upload_to='videos/',
         null=True,

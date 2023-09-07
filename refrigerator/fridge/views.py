@@ -41,6 +41,7 @@ class GetProducts(APIView):
     id = None
 
     def get(self, request, id=None):
+
         self.id = id
         if self.id:
             queryset = Product.objects.get(pk=self.id)
@@ -215,10 +216,9 @@ def create_camera(request):
 
         name = data["name"]
         url = data["url"]
-        model = data["model"]
 
         new_camera = Camera.objects.create(
-            url=url, model=model, user=request.user.origin_user, name=name
+            url=url, user=request.user.origin_user, name=name
         )
         new_camera.status = 0
         new_camera.save()
@@ -474,24 +474,7 @@ class VideoViewSet(ViewSet):
         return Response("GET API")
 
     def create(self, request):
-        # username = 'xdzry'
-        # password = 'ardan'
-        # email = 'ardan@ardan'
-        # first_name = 'artem'
-        # last_name = 'artem'
 
-        # new_user = User.objects.create_user(username, email, password)
-        # new_user.first_name = first_name
-        # new_user.last_name = last_name
-
-        # new_user.save()
-
-        # ext_user = ExtendedUser(user=new_user)
-        # ext_user.patronymic = 'artem'
-        # ext_user.save()
-        # data = json.loads(request.body)
-        # name = data['name']
-        # user_id = data['user_id']
         try:
             upload_file = request.FILES.get("upload_file")
             data = request.data
