@@ -24,8 +24,10 @@ cur = conn.cursor()
 
 # exit()
 
-
-sql_update_counter = """UPDATE fridge_counter SET current_counter = current_counter + %s WHERE camera_id = %s and product_id = %s"""
+if my_namespace.rm:
+    sql_update_counter = """UPDATE fridge_counter SET current_counter = current_counter - %s WHERE camera_id = %s and product_id = %s"""
+else:
+    sql_update_counter = """UPDATE fridge_counter SET current_counter = current_counter + %s WHERE camera_id = %s and product_id = %s"""
 
 current_product = None
 
