@@ -107,8 +107,8 @@ const ProductList = ({cameraId, setCameraId}: {cameraId: number, setCameraId: an
                             )}
                         </Select>
                     )}
-                    <IconButton aria-label='Add' size='sm' m={1} icon={<AddIcon/>} onClick={openModal}/>
-                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteCamera}/>
+                    <IconButton aria-label='Add' size='sm' m={1} icon={<AddIcon/>} onClick={openModal} bg='teal' />
+                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteCamera} bg='red'/>
                 </Flex>
                 <Counters camera_id={cameraId} />
             </Stack>         
