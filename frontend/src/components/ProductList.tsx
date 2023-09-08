@@ -1,29 +1,17 @@
 import { 
     Stack, 
     Select, 
-    List,
-    Editable,
-    EditableInput,
-    EditableTextarea,
-    EditablePreview,
-    Input,
-    ListItem, 
-    ButtonGroup,
     Flex,
-    useEditableControls,
     IconButton,
-    Text,
-    HStack
 } from "@chakra-ui/react";
 import { confirmAlert } from 'react-confirm-alert'
-import { CheckIcon, CloseIcon, EditIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons'
-import { useState, useEffect } from 'react';
+import { AddIcon } from '@chakra-ui/icons'
+import { useState } from 'react';
 import { useParams } from 'react-router-dom'
 import Modal from 'react-modal';
 import {
     useQuery
   } from '@tanstack/react-query'
-import axios from 'axios'
 import CreateCamera from "./CreateCamera";
 import Counters from "./Counters";
 
@@ -51,7 +39,7 @@ function useCameras(username: string | undefined) {
     })
 }
 
-const ProductList = () => {
+const ProductList = ({cameraId, setCameraId}: {cameraId: number, setCameraId: any}) => {
     const { username } = useParams()
     const { status, data, isFetching } = useCameras(username)
 
@@ -80,7 +68,7 @@ const ProductList = () => {
     //const [counter_ids, setCounterIds] = useState<number[]>([1, 2, 3])
     //const status: string = "success"
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [cameraId, setCameraId] = useState<number>(0)
+    //const [cameraId, setCameraId] = useState<number>(0)
 
     useEffect(() => {
         if (data && data.length){
