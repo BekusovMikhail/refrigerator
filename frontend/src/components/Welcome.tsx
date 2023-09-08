@@ -51,13 +51,13 @@ const Welcome = () => {
 
   return (
     <Flex
-    flexDirection="column"
-    width="100wh"
-    height="100vh"
-    backgroundColor="gray.200"
-    justifyContent="center"
-    alignItems="center"
-  >
+      flexDirection="column"
+      width="100wh"
+      height="100vh"
+      backgroundColor="gray.200"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Stack
         flexDir="column"
         mb="2"

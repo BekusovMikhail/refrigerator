@@ -47,18 +47,6 @@ const Register = () => {
         }).then(() => {
           window.location.replace("/main");
         })
-        // .then((res: any) => {
-        //   console.log("res")
-        //   // if(res.ok){
-        //   //   const data = res.json()
-        //   //   if (data["success"] == true){
-        //   //     navigate("/");
-        //   //   } else{
-        //   //     console.log("smthg wrong")
-        //   //   }
-        //   // }
-          
-        // })
       } else{
         setMessage("Пароли не совпадают")
       }

@@ -113,6 +113,7 @@ class GetCamerasByUserUsername(APIView):
 
     def get(self, request, username=None):
         self.username = username
+        print(username)
         if self.username:
             user = User.objects.filter(username=self.username)[0]
             print(user)
@@ -208,41 +209,53 @@ def regUser(request):
 
 
 @csrf_exempt
-@login_required
 def create_camera(request):
     if request.method == "POST" and request.content_type == "application/json":
         data = json.loads(request.body)
 
         name = data["name"]
         url = data["url"]
-        model = data["model"]
+        try:
+            user_tmp = User.objects.filter(username=data['username'])[0]
+            user_tmp = ExtendedUser.objects.get(pk=user_tmp.id)
+        except:
+            response_data = {
+                "success": False,
+                "message": "This user doesn't exist",
+            }
 
+            return JsonResponse(response_data, status=400)
+
+        # print(dir(request))
+        # print(dir(request.user))
+        # print(request.user.pk, request.user.username)
+        print(user_tmp)
         new_camera = Camera.objects.create(
-            url=url, model=model, user=request.user.origin_user, name=name
+            url=url, user=user_tmp, name=name
         )
         new_camera.status = 0
         new_camera.save()
 
-        try:
-            cap = cv2.VideoCapture(new_camera.url)
-            ret, frame = cap.read()
-            if not ret:
-                raise Exception("Cannot read stream")
-            ret, buf = cv2.imencode(".jpg", frame)
-            if not ret:
-                raise Exception("Cannot read stream")
-            content = ContentFile(buf.tobytes())
-            new_camera.sample_image.save(
-                "sample_image_{}.jpg".format(new_camera.id), content
-            )
+        # try:
+        #     cap = cv2.VideoCapture(new_camera.url)
+        #     ret, frame = cap.read()
+        #     if not ret:
+        #         raise Exception("Cannot read stream")
+        #     ret, buf = cv2.imencode(".jpg", frame)
+        #     if not ret:
+        #         raise Exception("Cannot read stream")
+        #     content = ContentFile(buf.tobytes())
+        #     new_camera.sample_image.save(
+        #         "sample_image_{}.jpg".format(new_camera.id), content
+        #     )
 
-        except:
-            response_data = {
-                "success": False,
-                "message": "Error reading from videostream",
-            }
+        # except:
+        #     response_data = {
+        #         "success": False,
+        #         "message": "Error reading from videostream",
+        #     }
 
-            return JsonResponse(response_data, status=400)
+        #     return JsonResponse(response_data, status=400)
 
         response_data = {
             "success": True,
@@ -375,15 +388,15 @@ def stop_camera_process(request):
         return JsonResponse(response_data, status=405)
 
 
-@login_required
 @csrf_exempt
 def add_counter(request):
     if request.method == "POST" and request.content_type == "application/json":
         data = json.loads(request.body)
 
         try:
-            camera_id = data["camera_id"]
+            camera_id = int(data["camera_id"])
             product_id = data["product_id"]
+            #print(camera_id, product_id)
 
             new_counter = Counter.objects.create(
                 camera=camera_id,

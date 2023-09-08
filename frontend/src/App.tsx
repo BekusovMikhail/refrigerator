@@ -7,24 +7,32 @@ import {
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ChakraProvider } from '@chakra-ui/react'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import "./App.css";
 import NavBar from "./components/NavBar";
 import Refrigerator from "./components/Refrigerator";
 import Welcome from "./components/Welcome";
 import Register from './components/Register';
 
+const queryClient = new QueryClient()
+
 function App() {
 
   return (
-    <ChakraProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Welcome/>} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/main" element={<Refrigerator />} />
-        </Routes>
-      </Router>
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Welcome/>} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/main" element={<Refrigerator />} />
+          </Routes>
+        </Router>
+      </ChakraProvider>
+    </QueryClientProvider>
   );
 }
 
