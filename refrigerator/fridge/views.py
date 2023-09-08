@@ -6,6 +6,10 @@ from rest_framework.views import APIView
 
 from rest_framework.viewsets import ViewSet
 
+from django.conf import settings
+
+import subprocess
+
 from .models import ExtendedUser, Counter, Camera, Product
 from django.contrib.auth.models import User
 from .serializers import (
@@ -31,7 +35,6 @@ from django.core.files.base import ContentFile
 from .models import *
 import os
 import json
-import subprocess
 import sys
 import time
 import cv2
@@ -41,7 +44,6 @@ class GetProducts(APIView):
     id = None
 
     def get(self, request, id=None):
-
         self.id = id
         if self.id:
             queryset = Product.objects.get(pk=self.id)
@@ -473,17 +475,41 @@ class VideoViewSet(ViewSet):
     def list(self, request):
         return Response("GET API")
 
-    def create(self, request):
-
+    def create(self, request):        
         try:
             upload_file = request.FILES.get("upload_file")
             data = request.data
+            try:
+                hand_direction = data["hand_direction"]
+            except:
+                hand_direction='Hor'
+            try:
+                fridge_side = data["fridge_side"]
+            except:
+                fridge_side='Right'
+            video_cam = Camera.objects.get(pk=int(data["camera"][0]))
             video = Video(
-                name=data["name"][0],
-                user_id=ExtendedUser.objects.get(pk=int(data["user_id"][0])),
+                name=data["name"],
+                user=video_cam.user,
+                camera=video_cam,
                 video=upload_file,
             )
             video.save()
+            print(data["hand_direction"])
+            print(settings.BASE_DIR)
+            subprocess_command = [
+                "python",
+                os.path.join(settings.BASE_DIR, "fridge/process_video/process_vid_cmd.py"),
+                "--vid_path",
+                os.path.join(settings.BASE_DIR, "media", video.video.__str__()),
+                "--fridge_id",
+                str(int(data["camera"][0])),
+                "--hand_direction",
+                hand_direction,
+                "--fridge_side",
+                fridge_side,
+            ]
+            subprocess.run(subprocess_command)
             content_type = upload_file.content_type
             response = "You have uploaded a {} file".format(content_type)
         except:
