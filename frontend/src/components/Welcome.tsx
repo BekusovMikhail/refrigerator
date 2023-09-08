@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   Flex,
   Heading,
@@ -28,7 +28,6 @@ const Welcome = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowClick = () => setShowPassword(!showPassword);
-  //const navigate = useNavigate()
   
   const signIn = () => {
     fetch("http://localhost:8001/api/login_user/", {

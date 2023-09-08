@@ -109,7 +109,6 @@ const Counters = ({camera_id}: {camera_id: number}) => {
                             <ListItem key={counter[0]}>
                                 <HStack>
                                     <Text>{counter[2]}</Text>
-                                    {/* <Product id={Number(counter[3])}/> */}
                                     <Editable
                                         textAlign='center'
                                         defaultValue={String(counter[1])}

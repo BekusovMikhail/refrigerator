@@ -31,8 +31,6 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
 
-    //const navigate = useNavigate();
-
     const handleShowClick = () => setShowPassword(!showPassword);
 
     const register = () => {

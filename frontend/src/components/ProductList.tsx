@@ -21,12 +21,8 @@ const getCameras = async (username: string | undefined) => {
     }
     const response = await fetch("http://localhost:8000/api/cameras_by_username/" + username, {
         method: 'GET',
-        //mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
-        //   "Access-Control-Allow-Origin": "*",
-        //   "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-        //   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS, POST, PUT"
         }
     })
     return response.json()
@@ -59,49 +55,13 @@ const ProductList = ({cameraId, setCameraId}: {cameraId: number, setCameraId: an
           ]
         });
       }
-    //const data = [{"name": "Белый холодильник", "id": 1}, {"name": "Чёрный холодильник", "id": 2}]
-    // const counters_dict = [
-    //     {"camera": 1, "counters": ["Молоко: 3", "Сыр: 2", "Колбаса: 1"], "counter_id": [1, 2, 3]}, 
-    //     {"camera": 2, "counters": ["Яйцо: 10", "Помидор: 4"], "counter_id": [4, 5]}
-    // ]
-    //const [counters, setCounters] = useState<string[]>(["Молоко: 3", "Сыр: 2", "Колбаса: 1"])
-    //const [counter_ids, setCounterIds] = useState<number[]>([1, 2, 3])
-    //const status: string = "success"
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    //const [cameraId, setCameraId] = useState<number>(0)
 
     useEffect(() => {
         if (data && data.length){
             setCameraId(data[0][0])
         }
     }, [data])
-    // useEffect(() => {
-    //     fetch("http://localhost:8001/api/cameras_by_username/LuckyHorseshoe", {
-    //         method: 'GET',
-    //         headers: {
-    //         'Content-Type': 'application/json',
-    //         "Access-Control-Allow-Origin": "*",
-    //         "Access-Control-Allow-Headers": "*",
-    //         //   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS, POST, PUT"
-    //             }
-    //     })
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //         console.log(data);
-    //      })
-    //     .catch((err) => {
-    //         console.log(err.message);
-    //     });
-    // }, [])
-
-    // useEffect(() => {
-    //     for (let i = 0; i < counters_dict.length; i++){
-    //         if(counters_dict[i]["camera"] == cameraId){
-    //             setCounters(counters_dict[i]["counters"])
-    //             setCounterIds(counters_dict[i]["counter_id"])
-    //         }
-    //     }
-    // }, [cameraId])
 
     const selectCamera = (e: any) => {
         setCameraId(e.target.value)
@@ -142,7 +102,6 @@ const ProductList = ({cameraId, setCameraId}: {cameraId: number, setCameraId: an
                             {data?.map((row: any, i: number) => (
                                     <option key={i} value={row[0]}>
                                         {row[1]}
-                                        {/* <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteCamera}/> */}
                                     </option>
                                     )
                             )}
