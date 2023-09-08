@@ -386,8 +386,8 @@ def add_counter(request):
             product_id = data["product_id"]
 
             new_counter = Counter.objects.create(
-                camera=camera_id,
-                product=product_id,
+                camera=Camera.objects.get(pk=camera_id),
+                product=Product.objects.get(pk=product_id),
             )
             new_counter.save()
             response_data = {"success": True, "message": "Counter добавлен"}
