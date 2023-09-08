@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Flex, Stack, Input, Button, HStack, Text } from "@chakra-ui/react";
+import { useParams } from 'react-router-dom'
 
 const CreateCamera = ({closeModal}: {closeModal: any}) => {
     const [url, setUrl] = useState('')
     const [name, setName] = useState('')
-    const [username, setUsername] = useState('LuckyHorseshoe')
+    const { username } = useParams()
+    //const [username, setUsername] = useState('LuckyHorseshoe')
 
     const addCamera = () => {
         fetch("http://localhost:8001/api/create_camera/", {

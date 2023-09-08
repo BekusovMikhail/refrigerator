@@ -43,7 +43,7 @@ const Register = () => {
           body: JSON.stringify({"username": username, "password": password, "email": email, 
           "name": name, "surname": surname})
         }).then(() => {
-          window.location.replace("/main");
+          window.location.replace("/main/" + username);
         })
       } else{
         setMessage("Пароли не совпадают")
