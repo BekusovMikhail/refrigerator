@@ -6,12 +6,14 @@ const VideoInput = ({cameraId}: {cameraId: number}) => {
     const inputRef = useRef<any>();
 
     const [source, setSource] = useState<string>();
+    const [name, setName] = useState<string>();
     const [file, setFile] = useState<File>();
     const [handDirection, setHandDirection] = useState('Hor')
     const [fridgeSide, setFridgeSide] = useState('Right')
 
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
+        setName(file.name)
         const url = URL.createObjectURL(file);
         setSource(url);
         setFile(file)
@@ -22,24 +24,19 @@ const VideoInput = ({cameraId}: {cameraId: number}) => {
     };
 
     const submitFile = () => {
-        const name = file ? file.name : ''
-        console.log(file)
+        //const name = file ? file.name : ''
+        //console.log(file)
         const formData = new FormData();
         if(file){
             formData.append("upload_file", file)
         }
-        formData.append("name", name)
+        if(name){
+            formData.append("name", name)
+        }
         formData.append("camera", String(cameraId))
         formData.append("hand_direction", handDirection)
         formData.append("fridge_side", fridgeSide)
         axios.post("http://localhost:8001/api/upload_video/", formData, {headers: {"content-type": "multipart/form-data"}})
-        // fetch("http://localhost:8001/api/upload_video/", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "multipart/form-data" },
-        //     body: JSON.stringify({"upload_file": file, "name": name, "camera": [cameraId], "hand_direction": handDirection, "fridge_side": fridgeSide})
-        // })
-        // .then((res) => res.json())
-        // .then((data) => console.log(data))
     }
 
     const selectHandDirection = (e: any) => {
@@ -61,17 +58,17 @@ const VideoInput = ({cameraId}: {cameraId: number}) => {
                     onChange={handleFileChange}
                     accept=".mov,.mp4"
                 />
-                {!source && <button onClick={handleChoose}>Choose</button>}
-                {source && (
+                <Button m={3} onClick={handleChoose}>Choose</Button>
+                {/* {source && (
                     <video
                     className="VideoInput_video"
                     width={1000}
                     controls
                     src={source}
                     />
-                )}
-                {/* <div className="VideoInput_footer">{source || "Nothing selectd"}</div> */}
-                <HStack>
+                )} */}
+                <div className="VideoInput_footer">{name || "Nothing selected"}</div>
+                <HStack m={3} spacing={3}>
                     <Text>Сторона холодильника:</Text>
                     <Select onChange={selectFridgeSide} defaultValue="Right">
                         <option value='Left'>Левая</option>
