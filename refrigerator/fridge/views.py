@@ -273,19 +273,19 @@ def create_camera(request):
         return JsonResponse(response_data, status=405)
 
 
-@login_required
+#@login_required
 @csrf_exempt
 def delete_camera(request):
     if request.method == "POST" and request.content_type == "application/json":
         # parse json data from request
         data = json.loads(request.body)
 
-        id = data["id"]
+        id = int(data["id"])
         print(Camera.objects.filter(id=id))
         print(Camera.objects.filter(id=id)[0].pid)
 
         # taskkill /PID <pid> /F
-        os.system(f"taskkill /PID {Camera.objects.filter(id=id)[0].pid} /F")
+        #os.system(f"taskkill /PID {Camera.objects.filter(id=id)[0].pid} /F")
         Camera.objects.filter(id=id).delete()
 
         response_data = {"success": True, "message": "Camera was deleted successfully"}
@@ -394,22 +394,22 @@ def add_counter(request):
     if request.method == "POST" and request.content_type == "application/json":
         data = json.loads(request.body)
 
-        try:
-            camera_id = int(data["camera_id"])
-            product_id = data["product_id"]
-            #print(camera_id, product_id)
+        #try:
+        camera_id = int(data["camera_id"])
+        product_id = data["product_id"]
+        print(camera_id, product_id)
 
-            new_counter = Counter.objects.create(
-                camera=Camera.objects.get(pk=camera_id),
-                product=Product.objects.get(pk=product_id),
-            )
-            new_counter.save()
-            response_data = {"success": True, "message": "Counter добавлен"}
-        except:
-            response_data = {
-                "success": False,
-                "message": "Не удалось добавить Counter",
-            }
+        new_counter = Counter.objects.create(
+            camera=Camera.objects.get(pk=camera_id),
+            product=Product.objects.get(pk=product_id),
+        )
+        new_counter.save()
+        response_data = {"success": True, "message": "Counter добавлен"}
+        # except:
+        #     response_data = {
+        #         "success": False,
+        #         "message": "Не удалось добавить Counter",
+        #     }
 
         return JsonResponse(response_data)
 

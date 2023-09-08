@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon, EditIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import CreateCounter from './CreateCounter';
+import Product from './Product';
 
 const getCounters = async (camera_id: number) => {
     const response = await fetch(`http://localhost:8000/api/counters_by_camera/${camera_id}`, {
@@ -40,6 +41,7 @@ function useCounters(camera_id: number) {
         queryFn: () => getCounters(camera_id),
     })
 }
+
 
 function EditableControls() {
     const {
@@ -64,6 +66,7 @@ function EditableControls() {
 const Counters = ({camera_id}: {camera_id: number}) => {
     const { status, data, isFetching } = useCounters(camera_id)
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [count, setCount] = useState(0)
 
     const openModal = () => {
         setModalIsOpen(true);
@@ -72,6 +75,24 @@ const Counters = ({camera_id}: {camera_id: number}) => {
     const closeModal = () => {
         setModalIsOpen(false);
     };
+
+    const deleteProduct = (counter_id: number) => () => {
+        fetch("http://localhost:8000/api/delete_counter/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({"counter_id": counter_id})
+        })
+    }
+
+    const handleChange = (counter_id: number) => (e: any) => {
+        setCount(e.target.value)
+        fetch("http://localhost:8000/api/put_counter/", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({"counter_id": counter_id, "count": count})
+        })
+        console.log(count)
+    }
 
     return(
         <div>
@@ -86,20 +107,22 @@ const Counters = ({camera_id}: {camera_id: number}) => {
                     <List spacing={3}>
                         {data?.map((counter: string, i: number) => (
                             <ListItem key={counter[0]}>
-                                <Flex flexDirection="row" justifyContent='center'>
-                                    <Text></Text>
+                                <HStack>
+                                    <Text>{counter[2]}</Text>
+                                    {/* <Product id={Number(counter[3])}/> */}
                                     <Editable
                                         textAlign='center'
-                                        defaultValue={counter[3]}
+                                        defaultValue={String(counter[1])}
                                         isPreviewFocusable={false}
                                         >
                                             <Flex flexDirection="row" justifyContent='center' ml={1}>
                                                 <EditablePreview />
-                                                <Input as={EditableInput} />
+                                                <Input as={EditableInput} onChange={handleChange(Number(counter[0]))} />
                                                 <EditableControls />
                                             </Flex>
                                     </Editable>
-                                </Flex>
+                                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteProduct(Number(counter[0]))}/>
+                                </HStack>
                             </ListItem>
                         ))}
                         <ListItem key={0}>

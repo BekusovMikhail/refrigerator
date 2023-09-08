@@ -39,7 +39,7 @@ const Welcome = () => {
       return res.json()
     }).then((res) => {
       if (res["success"]){
-        window.location.replace("/main");
+        window.location.replace("/main/" + username);
       }
       else{
         setMessage(res["message"])

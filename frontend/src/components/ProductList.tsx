@@ -15,8 +15,10 @@ import {
     Text,
     HStack
 } from "@chakra-ui/react";
+import { confirmAlert } from 'react-confirm-alert'
 import { CheckIcon, CloseIcon, EditIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'
 import Modal from 'react-modal';
 import {
     useQuery
@@ -25,8 +27,11 @@ import axios from 'axios'
 import CreateCamera from "./CreateCamera";
 import Counters from "./Counters";
 
-const getCameras = async () => {
-    const response = await fetch("http://localhost:8000/api/cameras_by_username/LuckyHorseshoe", {
+const getCameras = async (username: string | undefined) => {
+    if (!username){
+        return []
+    }
+    const response = await fetch("http://localhost:8000/api/cameras_by_username/" + username, {
         method: 'GET',
         //mode: 'cors',
         headers: {
@@ -39,15 +44,33 @@ const getCameras = async () => {
     return response.json()
 }
 
-function useCameras() {
+function useCameras(username: string | undefined) {
     return useQuery({
         queryKey: ['cameras'],
-        queryFn: () => getCameras(),
+        queryFn: () => getCameras(username),
     })
 }
 
 const ProductList = () => {
-    const { status, data, isFetching } = useCameras()
+    const { username } = useParams()
+    const { status, data, isFetching } = useCameras(username)
+
+    const submit = () => {
+
+        confirmAlert({
+          title: 'Удалить',
+          message: 'Уверены, что хотите удалить точку наблюдения?',
+          buttons: [
+            {
+              label: 'Да',
+              onClick: () => deleteCamera()
+            },
+            {
+              label: 'Нет',
+            }
+          ]
+        });
+      }
     //const data = [{"name": "Белый холодильник", "id": 1}, {"name": "Чёрный холодильник", "id": 2}]
     // const counters_dict = [
     //     {"camera": 1, "counters": ["Молоко: 3", "Сыр: 2", "Колбаса: 1"], "counter_id": [1, 2, 3]}, 
@@ -59,6 +82,11 @@ const ProductList = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [cameraId, setCameraId] = useState<number>(0)
 
+    useEffect(() => {
+        if (data && data.length){
+            setCameraId(data[0][0])
+        }
+    }, [data])
     // useEffect(() => {
     //     fetch("http://localhost:8001/api/cameras_by_username/LuckyHorseshoe", {
     //         method: 'GET',
@@ -133,6 +161,7 @@ const ProductList = () => {
                         </Select>
                     )}
                     <IconButton aria-label='Add' size='sm' m={1} icon={<AddIcon/>} onClick={openModal}/>
+                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteCamera}/>
                 </Flex>
                 <Counters camera_id={cameraId} />
             </Stack>         

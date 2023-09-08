@@ -31,7 +31,18 @@ def get_counters(camera_id: int):
 def get_product_id(name: str):
     return {"product_id": select_product_id(name)}
 
+@app.get("/api/product_name_by_id/{product_id}")
+def get_product_id(product_id: int):
+    return {"product": select_product_name(product_id)}
+
 @app.get("/api/user_id_by_name/{name}")
 def get_product_id(name: str):
     return {"user_id": select_user_id(name)}
 
+@app.post("/api/delete_counter/")
+def del_counter(req: dict):
+    delete_counter(req["counter_id"])
+
+@app.put("/api/put_counter/")
+def put_counter(req: dict):
+    update_counter(req["counter_id"], req["count"])
