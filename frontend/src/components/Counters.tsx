@@ -38,6 +38,7 @@ function useCounters(camera_id: number) {
     return useQuery({
         queryKey: ['counters'],
         queryFn: () => getCounters(camera_id),
+        refetchInterval: 250
     })
 }
 
@@ -57,7 +58,7 @@ function EditableControls() {
       </ButtonGroup>
     ) : (
       <Flex ml={1}>
-        <IconButton aria-label='Edit' size='sm' icon={<EditIcon {...getEditButtonProps()} />} />
+        <IconButton aria-label='Edit' size='sm' icon={<EditIcon {...getEditButtonProps()} />} bg='#2374ab' />
       </Flex>
     )
 }
@@ -112,6 +113,7 @@ const Counters = ({camera_id}: {camera_id: number}) => {
                                         textAlign='center'
                                         defaultValue={String(counter[1])}
                                         isPreviewFocusable={false}
+                                        style={{position: 'absolute', left: '25vh'}}
                                         >
                                             <Flex flexDirection="row" justifyContent='center' ml={1}>
                                                 <EditablePreview />
@@ -119,13 +121,13 @@ const Counters = ({camera_id}: {camera_id: number}) => {
                                                 <EditableControls />
                                             </Flex>
                                     </Editable>
-                                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteProduct(Number(counter[0]))}/>
+                                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteProduct(Number(counter[0]))} bg='#dc3545' style={{position: 'absolute', left: '32vh'}}/>
                                 </HStack>
                             </ListItem>
                         ))}
-                        <ListItem key={0}>
+                        {/* <ListItem key={0}>
                             <Button onClick={openModal}>Добавить</Button>
-                        </ListItem>
+                        </ListItem> */}
                     </List>
                 )}
         </div>

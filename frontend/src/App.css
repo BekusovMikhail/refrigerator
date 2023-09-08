@@ -39,7 +39,6 @@
 
 .container {
   display: grid;
-  gap: 2vh;
   height: 100vh;
 
   grid-template-areas: 
@@ -59,23 +58,19 @@
 
 .box-1{
   grid-area: A;
-  border: 1px solid rgb(75, 97, 97);
-  border-radius: 10px;
+  background: #3aafa9;
   padding: 5px;
   height: 7vh;
 }
 .box-2{
   grid-area: B;
-  border: 1px solid rgb(75, 97, 97);
-  border-radius: 10px;
   padding: 10px;
   width: 78vw;
   height: 91vh;
 }
 .box-3{
   grid-area: C;
-  border: 1px solid rgb(75, 97, 97);
-  border-radius: 10px;
+  border-right: 1px solid teal;
   padding: 10px;
   width: 20vw;
   height: 91vh;

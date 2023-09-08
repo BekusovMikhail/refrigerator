@@ -32,6 +32,7 @@ function useCameras(username: string | undefined) {
     return useQuery({
         queryKey: ['cameras'],
         queryFn: () => getCameras(username),
+        refetchInterval: 250
     })
 }
 
@@ -89,8 +90,9 @@ const ProductList = ({cameraId, setCameraId}: {cameraId: number, setCameraId: an
             <Stack
                 flexDir="column"
                 mb="2"
-                justifyContent="center"
-                alignItems="center"
+                ml="2"
+                justifyContent="left"
+                alignItems="start"
             >
                 <Flex>
                 {status === 'loading' ? (
@@ -108,7 +110,7 @@ const ProductList = ({cameraId, setCameraId}: {cameraId: number, setCameraId: an
                         </Select>
                     )}
                     <IconButton aria-label='Add' size='sm' m={1} icon={<AddIcon/>} onClick={openModal} bg='teal' />
-                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteCamera} bg='red'/>
+                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteCamera} bg='#cd3342'/>
                 </Flex>
                 <Counters camera_id={cameraId} />
             </Stack>         
