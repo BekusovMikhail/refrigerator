@@ -23,7 +23,6 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon, EditIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import CreateCounter from './CreateCounter';
-import Product from './Product';
 
 const getCounters = async (camera_id: number) => {
     const response = await fetch(`http://localhost:8000/api/counters_by_camera/${camera_id}`, {

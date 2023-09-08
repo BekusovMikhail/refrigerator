@@ -5,8 +5,8 @@ import {
     IconButton,
 } from "@chakra-ui/react";
 import { confirmAlert } from 'react-confirm-alert'
-import { AddIcon } from '@chakra-ui/icons'
-import { useState } from 'react';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'
 import Modal from 'react-modal';
 import {

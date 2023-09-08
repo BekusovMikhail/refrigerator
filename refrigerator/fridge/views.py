@@ -493,6 +493,7 @@ class VideoViewSet(ViewSet):
         try:
             upload_file = request.FILES.get("upload_file")
             data = request.data
+            #print(data)
             try:
                 hand_direction = data["hand_direction"]
             except:
@@ -501,7 +502,7 @@ class VideoViewSet(ViewSet):
                 fridge_side = data["fridge_side"]
             except:
                 fridge_side='Right'
-            video_cam = Camera.objects.get(pk=int(data["camera"][0]))
+            video_cam = Camera.objects.get(pk=int(data["camera"]))
             video = Video(
                 name=data["name"],
                 user=video_cam.user,
