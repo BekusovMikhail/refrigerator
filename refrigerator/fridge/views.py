@@ -131,7 +131,7 @@ class GetCountersByCamera(APIView):
     def get(self, request, id=None):
         self.id = id
         if self.id:
-            queryset = Counter.objects.filter(camera=self.id)
+            queryset = Counter.objects.filter(camera=self.id, current_counter__gt=0)
             serializer_for_queryset = CounterSerializer(instance=queryset, many=True)
             return Response(serializer_for_queryset.data)
 
@@ -214,6 +214,17 @@ def regUser(request):
 @csrf_exempt
 def create_camera(request):
     if request.method == "POST" and request.content_type == "application/json":
+
+        import psycopg2
+
+        conn = psycopg2.connect(
+            host="127.0.0.1",
+            database="refrigeratorDB",
+            user="refrigeratorUser",
+            password="rupass",
+        )
+        cur = conn.cursor()
+
         data = json.loads(request.body)
 
         name = data["name"]
@@ -232,12 +243,18 @@ def create_camera(request):
         # print(dir(request))
         # print(dir(request.user))
         # print(request.user.pk, request.user.username)
-        print(user_tmp)
         new_camera = Camera.objects.create(
             url=url, user=user_tmp, name=name
         )
         new_camera.status = 0
         new_camera.save()
+
+        products = Product.objects.all()
+        for prod in products:
+            counter = Counter.objects.create(
+                camera = new_camera,
+                product = prod,
+            )
 
         # try:
         #     cap = cv2.VideoCapture(new_camera.url)
