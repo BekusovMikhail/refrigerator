@@ -116,12 +116,12 @@ const Counters = ({camera_id}: {camera_id: number}) => {
                                         style={{position: 'absolute', left: '25vh'}}
                                         >
                                             <Flex flexDirection="row" justifyContent='center' ml={1}>
-                                                <EditablePreview />
+                                                <EditablePreview mr={2} />
                                                 <Input as={EditableInput} onChange={handleChange(Number(counter[0]))} />
                                                 <EditableControls />
                                             </Flex>
                                     </Editable>
-                                    <IconButton aria-label='Delete' size='sm' m={1} icon={<DeleteIcon/>} onClick={deleteProduct(Number(counter[0]))} bg='#dc3545' style={{position: 'absolute', left: '32vh'}}/>
+                                    <IconButton aria-label='Delete' size='sm' m={2} icon={<DeleteIcon/>} onClick={deleteProduct(Number(counter[0]))} bg='#dc3545' style={{position: 'absolute', left: '32vh'}}/>
                                 </HStack>
                             </ListItem>
                         ))}
